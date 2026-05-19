@@ -1,400 +1,510 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
 <style>
-  :root {
-    --bleu:  #5BADD6;
-    --jaune: #D4B84A;
-    --gris:  #6B6457;
-    --vert:  #5A9E00;
-    --blanc: #FAFAF8;
-    --fond:  #F2EFE8;
-    --texte: #2A2820;
-    --radius: 14px;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'DM Sans', sans-serif; background: var(--fond); color: var(--texte); min-height: 100vh; }
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;500;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',sans-serif;background:#0E0D0B;color:#fff;min-height:100vh;}
+.page{display:none;}.page.active{display:block;}
 
-  header {
-    background: var(--texte);
-    padding: 0 40px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 72px;
-  }
-  .logo-zone { display: flex; align-items: center; gap: 14px; cursor: pointer; position: relative; }
-  .logo-img {
-    width: 44px; height: 44px; border-radius: 10px;
-    background: var(--bleu); display: flex; align-items: center; justify-content: center;
-    overflow: hidden; border: 2px solid rgba(255,255,255,0.15);
-  }
-  .logo-img svg { width: 26px; height: 26px; }
-  .logo-img img { width: 100%; height: 100%; object-fit: cover; }
-  .logo-name { font-family: 'Playfair Display', serif; color: #fff; font-size: 17px; letter-spacing: 0.02em; }
-  .logo-sub { font-size: 10px; color: rgba(255,255,255,0.45); letter-spacing: 0.12em; text-transform: uppercase; margin-top: 1px; display: block; }
-  .logo-upload-hint {
-    position: absolute; bottom: -30px; left: 0;
-    background: var(--bleu); color: #fff; font-size: 11px;
-    padding: 4px 10px; border-radius: 6px; white-space: nowrap;
-    opacity: 0; transition: opacity 0.2s; pointer-events: none;
-  }
-  .logo-zone:hover .logo-upload-hint { opacity: 1; }
-  #logo-file { display: none; }
-  .header-badge {
-    background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12);
-    color: rgba(255,255,255,0.7); font-size: 12px; padding: 6px 14px;
-    border-radius: 20px; letter-spacing: 0.08em; text-transform: uppercase;
-  }
+/* HEADER */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  padding:0 48px;height:64px;
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(14,13,11,.85);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(255,255,255,.07);
+}
+.nav-logo{display:flex;align-items:center;gap:12px;}
+.nav-mark{
+  width:36px;height:36px;border-radius:10px;
+  background:#5BADD6;
+  display:flex;align-items:center;justify-content:center;
+}
+.nav-mark svg{width:20px;height:20px;}
+.nav-name{font-family:'Playfair Display',serif;font-size:15px;color:#fff;}
+.nav-tag{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.3);border:1px solid rgba(255,255,255,.1);padding:4px 12px;border-radius:20px;}
 
-  .hero {
-    background: var(--texte); padding: 56px 40px 72px; position: relative; overflow: hidden;
-  }
-  .hero::before {
-    content: ''; position: absolute; right: -60px; top: -60px;
-    width: 320px; height: 320px; border-radius: 50%; background: var(--bleu); opacity: 0.08;
-  }
-  .hero::after {
-    content: ''; position: absolute; right: 80px; bottom: -80px;
-    width: 200px; height: 200px; border-radius: 50%; background: var(--jaune); opacity: 0.1;
-  }
-  .hero-eyebrow { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--jaune); margin-bottom: 16px; }
-  .hero h1 { font-family: 'Playfair Display', serif; font-size: 42px; color: #fff; line-height: 1.15; max-width: 480px; margin-bottom: 18px; }
-  .hero p { color: rgba(255,255,255,0.55); font-size: 15px; max-width: 400px; line-height: 1.7; }
+/* ══ ACCUEIL ══ */
+.home-wrap{padding-top:64px;min-height:100vh;}
 
-  .quiz-wrapper { max-width: 700px; margin: -32px auto 60px; padding: 0 24px; position: relative; z-index: 10; }
+.home-hero{
+  padding:100px 48px 80px;
+  position:relative;overflow:hidden;
+}
+.home-hero::before{
+  content:'';position:absolute;
+  width:600px;height:600px;border-radius:50%;
+  background:radial-gradient(circle,rgba(91,173,214,.18) 0%,transparent 70%);
+  right:-100px;top:-100px;pointer-events:none;
+}
+.home-hero::after{
+  content:'';position:absolute;
+  width:400px;height:400px;border-radius:50%;
+  background:radial-gradient(circle,rgba(212,184,74,.12) 0%,transparent 70%);
+  left:-80px;bottom:-80px;pointer-events:none;
+}
 
-  .progress-bar-wrap {
-    background: #fff; border-radius: var(--radius); padding: 20px 28px; margin-bottom: 20px;
-    border: 1px solid rgba(0,0,0,0.07); display: flex; align-items: center; gap: 20px;
-  }
-  .progress-track { flex: 1; height: 6px; background: #E8E4DC; border-radius: 3px; overflow: hidden; }
-  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--bleu), var(--vert)); border-radius: 3px; transition: width 0.5s cubic-bezier(.4,0,.2,1); }
-  .progress-label { font-size: 13px; color: var(--gris); white-space: nowrap; font-weight: 500; }
-  .score-badge { background: var(--texte); color: var(--jaune); font-size: 13px; font-weight: 600; padding: 6px 14px; border-radius: 20px; white-space: nowrap; }
+.hero-label{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+  color:#D4B84A;margin-bottom:24px;
+}
+.hero-label-dot{width:6px;height:6px;border-radius:50%;background:#D4B84A;}
 
-  .card { background: #fff; border-radius: var(--radius); padding: 36px 40px; border: 1px solid rgba(0,0,0,0.07); animation: slideUp 0.4s cubic-bezier(.4,0,.2,1); }
-  @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+.home-hero h1{
+  font-family:'Playfair Display',serif;
+  font-size:68px;line-height:1.05;
+  color:#fff;max-width:600px;margin-bottom:24px;
+}
+.home-hero h1 span{color:#5BADD6;}
+.home-hero p{
+  font-size:16px;color:rgba(255,255,255,.4);
+  max-width:400px;line-height:1.8;margin-bottom:56px;
+}
 
-  .q-number { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--bleu); font-weight: 600; margin-bottom: 14px; }
-  .q-text { font-family: 'Playfair Display', serif; font-size: 24px; color: var(--texte); line-height: 1.4; margin-bottom: 10px; }
-  .q-hint { font-size: 13px; color: var(--gris); margin-bottom: 30px; font-style: italic; }
+.home-cards{
+  display:grid;grid-template-columns:1fr 1fr;gap:16px;
+  max-width:800px;
+}
 
-  .choices { display: flex; flex-direction: column; gap: 12px; }
-  .choice-btn {
-    display: flex; align-items: center; gap: 16px; padding: 16px 20px;
-    border: 1.5px solid #E4E0D8; border-radius: 10px; background: var(--fond);
-    cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 15px; color: var(--texte);
-    text-align: left; transition: border-color 0.18s, background 0.18s, transform 0.12s;
-  }
-  .choice-btn:hover:not(:disabled) { border-color: var(--bleu); background: #EDF5FB; transform: translateX(4px); }
-  .choice-btn:disabled { cursor: default; }
-  .choice-letter {
-    width: 32px; height: 32px; border-radius: 8px; background: #fff; border: 1.5px solid #DDD;
-    display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600;
-    color: var(--gris); flex-shrink: 0; transition: background 0.18s, color 0.18s;
-  }
-  .choice-btn.correct { border-color: var(--vert); background: #EEF7E6; }
-  .choice-btn.correct .choice-letter { background: var(--vert); color: #fff; border-color: var(--vert); }
-  .choice-btn.wrong { border-color: #D64040; background: #FBF0F0; }
-  .choice-btn.wrong .choice-letter { background: #D64040; color: #fff; border-color: #D64040; }
+.hcard{
+  border-radius:20px;overflow:hidden;cursor:pointer;
+  border:1px solid rgba(255,255,255,.08);
+  background:rgba(255,255,255,.03);
+  transition:border-color .3s, transform .3s;
+  position:relative;
+}
+.hcard:hover{border-color:rgba(255,255,255,.2);transform:translateY(-4px);}
 
-  .feedback-badge {
-    margin-top: 20px; padding: 14px 20px; border-radius: 10px;
-    display: flex; align-items: center; gap: 12px; font-size: 14px; line-height: 1.5;
-    animation: fadeIn 0.3s ease;
-  }
-  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-  .feedback-badge.vrai { background: #EEF7E6; border-left: 4px solid var(--vert); color: #2D6010; }
-  .feedback-badge.faux { background: #FBF0F0; border-left: 4px solid #D64040; color: #8C1C1C; }
-  .feedback-icon { font-size: 22px; flex-shrink: 0; }
-  .feedback-text strong { display: block; font-size: 16px; font-weight: 600; margin-bottom: 2px; }
+.hcard-img{
+  height:180px;display:flex;align-items:flex-end;
+  padding:24px;position:relative;overflow:hidden;
+}
+.hcard.enfant .hcard-img{background:linear-gradient(135deg,#0d2410,#1a4020);}
+.hcard.adulte .hcard-img{background:linear-gradient(135deg,#0a1e2e,#0d3350);}
 
-  .next-btn {
-    margin-top: 28px; width: 100%; padding: 16px; background: var(--texte); color: #fff;
-    border: none; border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 15px;
-    font-weight: 500; cursor: pointer; letter-spacing: 0.04em;
-    transition: background 0.18s, transform 0.12s; display: none;
-  }
-  .next-btn:hover { background: #444; transform: translateY(-1px); }
+.hcard-emoji{
+  position:absolute;right:24px;top:24px;
+  font-size:56px;opacity:.35;
+}
+.hcard-chip{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;
+  padding:6px 14px;border-radius:20px;
+}
+.hcard.enfant .hcard-chip{background:rgba(90,158,0,.2);color:#8fd44a;}
+.hcard.adulte .hcard-chip{background:rgba(91,173,214,.15);color:#7ac6e8;}
 
-  .results-card { background: #fff; border-radius: var(--radius); padding: 48px 40px; text-align: center; border: 1px solid rgba(0,0,0,0.07); animation: slideUp 0.5s cubic-bezier(.4,0,.2,1); }
-  .results-circle { width: 110px; height: 110px; border-radius: 50%; background: var(--texte); margin: 0 auto 28px; display: flex; align-items: center; justify-content: center; flex-direction: column; }
-  .results-score-big { font-family: 'Playfair Display', serif; font-size: 34px; color: var(--jaune); line-height: 1; }
-  .results-score-denom { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 2px; }
-  .results-title { font-family: 'Playfair Display', serif; font-size: 28px; margin-bottom: 10px; }
-  .results-sub { color: var(--gris); font-size: 15px; margin-bottom: 32px; line-height: 1.6; }
-  .results-breakdown { display: flex; justify-content: center; gap: 24px; margin-bottom: 36px; }
-  .breakdown-item { text-align: center; padding: 16px 24px; background: var(--fond); border-radius: 10px; min-width: 100px; }
-  .breakdown-num { font-size: 28px; font-weight: 600; color: var(--texte); }
-  .breakdown-num.green { color: var(--vert); }
-  .breakdown-num.red   { color: #D64040; }
-  .breakdown-lbl { font-size: 12px; color: var(--gris); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.08em; }
-  .restart-btn { padding: 16px 40px; background: var(--texte); color: #fff; border: none; border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 500; cursor: pointer; transition: background 0.18s; }
-  .restart-btn:hover { background: #444; }
+.hcard-body{padding:24px;}
+.hcard-title{font-family:'Playfair Display',serif;font-size:22px;margin-bottom:8px;}
+.hcard-desc{font-size:13px;color:rgba(255,255,255,.4);line-height:1.7;margin-bottom:20px;}
+
+.hcard-meta{display:flex;gap:10px;margin-bottom:24px;flex-wrap:wrap;}
+.hmeta{font-size:11px;color:rgba(255,255,255,.3);background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07);padding:4px 10px;border-radius:8px;}
+
+/* BOUTON CARD */
+.hcard-btn{
+  width:100%;padding:14px;border-radius:12px;
+  font-family:'Inter',sans-serif;font-size:13px;font-weight:600;
+  letter-spacing:.04em;cursor:pointer;border:none;
+  display:flex;align-items:center;justify-content:space-between;
+  transition:opacity .2s;
+}
+.hcard-btn:hover{opacity:.88;}
+.hcard.enfant .hcard-btn{background:#5A9E00;color:#fff;}
+.hcard.adulte .hcard-btn{background:#5BADD6;color:#fff;}
+.hcard-btn-arrow{
+  width:28px;height:28px;border-radius:8px;
+  background:rgba(255,255,255,.18);
+  display:flex;align-items:center;justify-content:center;font-size:14px;
+}
+
+/* ══ QUIZ PAGES ══ */
+.quiz-page{padding-top:64px;min-height:100vh;}
+
+.quiz-header{
+  padding:48px 48px 80px;
+  position:relative;overflow:hidden;
+}
+.quiz-header::before{content:'';position:absolute;right:-40px;top:-40px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(91,173,214,.15) 0%,transparent 70%);pointer-events:none;}
+
+.back{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:13px;color:rgba(255,255,255,.3);
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);
+  border-radius:20px;padding:7px 16px;
+  cursor:pointer;margin-bottom:32px;
+  font-family:'Inter',sans-serif;font-weight:500;
+  transition:color .2s,background .2s;
+}
+.back:hover{color:#fff;background:rgba(255,255,255,.1);}
+
+.quiz-header h2{font-family:'Playfair Display',serif;font-size:38px;margin-bottom:8px;}
+.quiz-header p{color:rgba(255,255,255,.35);font-size:14px;}
+
+.qwrap{max-width:680px;margin:-44px auto 60px;padding:0 28px;}
+
+.prog{
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);
+  border-radius:14px;padding:16px 22px;margin-bottom:16px;
+  display:flex;align-items:center;gap:16px;
+}
+.prog-track{flex:1;height:3px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden;}
+.prog-fill{height:100%;border-radius:2px;transition:width .5s cubic-bezier(.4,0,.2,1);}
+.prog-lbl{font-size:12px;color:rgba(255,255,255,.3);white-space:nowrap;}
+.prog-score{font-size:12px;font-weight:600;color:#D4B84A;white-space:nowrap;}
+
+.qbox{
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  border-radius:20px;padding:40px;
+  animation:up .4s cubic-bezier(.4,0,.2,1);
+}
+@keyframes up{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+
+.qn{font-size:10px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;margin-bottom:16px;opacity:.5;}
+.qt{font-family:'Playfair Display',serif;font-size:24px;line-height:1.4;margin-bottom:32px;}
+
+/* CHOIX */
+.choices{display:flex;flex-direction:column;gap:8px;}
+.cbtn{
+  display:flex;align-items:center;gap:14px;
+  padding:14px 18px;border-radius:12px;
+  border:1px solid rgba(255,255,255,.08);
+  background:rgba(255,255,255,.03);
+  cursor:pointer;font-family:'Inter',sans-serif;font-size:14px;color:#fff;
+  text-align:left;transition:border-color .18s,background .18s,transform .15s;
+}
+.cbtn:hover:not(:disabled){border-color:rgba(91,173,214,.5);background:rgba(91,173,214,.08);transform:translateX(4px);}
+.cbtn:disabled{cursor:default;}
+.cl{
+  width:30px;height:30px;border-radius:8px;
+  border:1px solid rgba(255,255,255,.12);
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:600;color:rgba(255,255,255,.4);flex-shrink:0;
+}
+.cbtn.correct{border-color:#5A9E00;background:rgba(90,158,0,.12);}
+.cbtn.correct .cl{background:#5A9E00;color:#fff;border-color:#5A9E00;}
+.cbtn.wrong{border-color:#c0392b;background:rgba(192,57,43,.1);}
+.cbtn.wrong .cl{background:#c0392b;color:#fff;border-color:#c0392b;}
+
+/* VRAI/FAUX */
+.tfg{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.tfb{
+  padding:32px 16px;border-radius:14px;
+  border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);
+  cursor:pointer;font-family:'Inter',sans-serif;font-size:16px;font-weight:600;
+  display:flex;flex-direction:column;align-items:center;gap:12px;
+  transition:transform .15s,border-color .2s,background .2s;color:#fff;
+}
+.tfb:hover:not(:disabled){transform:scale(1.03);}
+.tfb:disabled{cursor:default;}
+.tfb .tfe{font-size:36px;}
+.tfb.vb{border-color:rgba(90,158,0,.4);}
+.tfb.fb{border-color:rgba(192,57,43,.4);}
+.tfb.correct{border-color:#5A9E00;background:rgba(90,158,0,.12);color:#8fd44a;}
+.tfb.wrong{border-color:#c0392b;background:rgba(192,57,43,.1);color:#e07070;}
+
+/* FEEDBACK */
+.fb{
+  margin-top:16px;padding:16px 20px;border-radius:12px;
+  display:flex;gap:14px;font-size:13px;line-height:1.6;
+  animation:fadeIn .3s ease;
+}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+.fb.ok{background:rgba(90,158,0,.1);border:1px solid rgba(90,158,0,.25);}
+.fb.ko{background:rgba(192,57,43,.08);border:1px solid rgba(192,57,43,.2);}
+.fb-i{font-size:18px;flex-shrink:0;}
+.fb-t strong{display:block;font-size:14px;font-weight:600;margin-bottom:3px;}
+.fb.ok .fb-t strong{color:#8fd44a;}
+.fb.ko .fb-t strong{color:#e07070;}
+.fb-t{color:rgba(255,255,255,.55);}
+
+/* BOUTON SUIVANT */
+.btn-next{
+  margin-top:24px;width:100%;padding:15px 24px;
+  border:none;border-radius:12px;
+  font-family:'Inter',sans-serif;font-size:13px;font-weight:600;
+  letter-spacing:.05em;cursor:pointer;
+  background:#fff;color:#0E0D0B;
+  display:none;align-items:center;justify-content:center;gap:8px;
+  transition:background .18s,transform .15s;
+}
+.btn-next:hover{background:#E8E4DC;transform:translateY(-2px);}
+.btn-next.show{display:flex;}
+
+/* RÉSULTATS */
+.res{
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  border-radius:20px;padding:52px 40px;text-align:center;
+  animation:up .5s cubic-bezier(.4,0,.2,1);
+}
+.res-ring{
+  width:120px;height:120px;border-radius:50%;
+  border:2px solid rgba(255,255,255,.1);
+  background:rgba(255,255,255,.05);
+  margin:0 auto 32px;
+  display:flex;align-items:center;justify-content:center;flex-direction:column;
+}
+.res-big{font-family:'Playfair Display',serif;font-size:36px;color:#D4B84A;line-height:1;}
+.res-pct{font-size:11px;color:rgba(255,255,255,.3);margin-top:4px;}
+.res-title{font-family:'Playfair Display',serif;font-size:28px;margin-bottom:10px;}
+.res-sub{font-size:14px;color:rgba(255,255,255,.4);line-height:1.75;max-width:340px;margin:0 auto 36px;}
+.res-stats{display:flex;justify-content:center;gap:12px;margin-bottom:40px;}
+.stat{
+  padding:18px 24px;border-radius:14px;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);
+  min-width:96px;text-align:center;
+}
+.stat-n{font-size:28px;font-weight:600;}
+.stat-n.g{color:#8fd44a;}.stat-n.r{color:#e07070;}
+.stat-l{font-size:10px;color:rgba(255,255,255,.25);margin-top:4px;text-transform:uppercase;letter-spacing:.1em;}
+.res-btns{display:flex;gap:10px;justify-content:center;}
+
+/* BOUTONS RÉSULTATS */
+.btn-white{
+  padding:13px 28px;border-radius:12px;
+  font-family:'Inter',sans-serif;font-size:13px;font-weight:600;
+  letter-spacing:.04em;cursor:pointer;
+  background:#fff;color:#0E0D0B;border:none;
+  transition:background .18s,transform .15s;
+}
+.btn-white:hover{background:#E8E4DC;transform:translateY(-2px);}
+.btn-ghost{
+  padding:13px 28px;border-radius:12px;
+  font-family:'Inter',sans-serif;font-size:13px;font-weight:600;
+  letter-spacing:.04em;cursor:pointer;
+  background:rgba(255,255,255,.06);color:rgba(255,255,255,.6);
+  border:1px solid rgba(255,255,255,.1);
+  transition:background .18s,transform .15s;
+}
+.btn-ghost:hover{background:rgba(255,255,255,.1);transform:translateY(-2px);}
 </style>
-</head>
-<body>
 
-<header>
-  <div class="logo-zone" onclick="document.getElementById('logo-file').click()">
-    <div class="logo-img" id="logoContainer">
-      <svg viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect x="2" y="10" width="22" height="14" rx="2" fill="white" opacity="0.9"/>
-        <polygon points="0,12 13,2 26,12" fill="white"/>
-        <rect x="9" y="16" width="8" height="8" rx="1" fill="#5BADD6"/>
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <div class="nav-mark">
+      <svg viewBox="0 0 22 22" fill="none">
+        <rect x="1" y="9" width="20" height="12" rx="2" fill="white" opacity=".9"/>
+        <polygon points="0,10 11,1 22,10" fill="white"/>
+        <rect x="7" y="14" width="8" height="7" rx="1" fill="#5BADD6"/>
       </svg>
     </div>
-    <div>
-      <div class="logo-name" id="cityName">Ville de Thomery</div>
-      <span class="logo-sub">Commune · Seine et Marne</span>
+    <span class="nav-name">Thomery</span>
+  </div>
+  <span class="nav-tag">Quiz Citoyen</span>
+</nav>
+
+<!-- PAGE ACCUEIL -->
+<div class="page active" id="page-accueil">
+  <div class="home-wrap">
+    <div class="home-hero">
+      <div class="hero-label"><span class="hero-label-dot"></span>Connaissance du territoire</div>
+      <h1>Connaissez-vous<br><span>Thomery</span> ?</h1>
+      <p>Testez vos connaissances sur notre commune à travers deux quiz adaptés à chaque âge.</p>
+      <div class="home-cards">
+
+        <div class="hcard enfant" onclick="startQuiz('enfant')">
+          <div class="hcard-img">
+            <span class="hcard-emoji">🧒</span>
+            <span class="hcard-chip">Enfants · Dès 7 ans</span>
+          </div>
+          <div class="hcard-body">
+            <div class="hcard-title">Quiz Junior</div>
+            <div class="hcard-desc">Des questions amusantes en Vrai ou Faux pour découvrir ta ville.</div>
+            <div class="hcard-meta">
+              <span class="hmeta">10 questions</span>
+              <span class="hmeta">Vrai / Faux</span>
+              <span class="hmeta">Facile</span>
+            </div>
+            <button class="hcard-btn">
+              Jouer maintenant
+              <span class="hcard-btn-arrow">→</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="hcard adulte" onclick="startQuiz('adulte')">
+          <div class="hcard-img">
+            <span class="hcard-emoji">🏛️</span>
+            <span class="hcard-chip">Adultes · Tout public</span>
+          </div>
+          <div class="hcard-body">
+            <div class="hcard-title">Quiz Expert</div>
+            <div class="hcard-desc">Plongez dans l'histoire et le patrimoine de Thomery.</div>
+            <div class="hcard-meta">
+              <span class="hmeta">13 questions</span>
+              <span class="hmeta">4 choix</span>
+              <span class="hmeta">Expert</span>
+            </div>
+            <button class="hcard-btn">
+              Jouer maintenant
+              <span class="hcard-btn-arrow">→</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
     </div>
   </div>
-  <input type="file" id="logo-file" accept="image/*" onchange="changeLogo(event)">
-  <div class="header-badge">Quiz Citoyen</div>
-</header>
-
-<div class="hero">
-  <div class="hero-eyebrow">Connaissance de votre territoire</div>
-  <h1>Testez vos connaissances sur notre ville</h1>
-  <p>Un quiz interactif pour mieux connaître votre commune, son histoire, ses services et ses engagements.</p>
 </div>
 
-<div class="quiz-wrapper">
-  <div class="progress-bar-wrap" id="progressSection">
-    <div class="progress-track">
-      <div class="progress-fill" id="progressFill" style="width:0%"></div>
+<!-- PAGE ENFANT -->
+<div class="page" id="page-enfant">
+  <div class="quiz-page">
+    <div class="quiz-header">
+      <button class="back" onclick="goHome()">← Accueil</button>
+      <h2>Quiz Junior</h2>
+      <p>Vrai ou Faux ? À toi de jouer !</p>
     </div>
-    <div class="progress-label" id="progressLabel">Question 1 / 20</div>
-    <div class="score-badge" id="scoreBadge">Score : 0</div>
+    <div class="qwrap">
+      <div class="prog" id="prog-e">
+        <div class="prog-track"><div class="prog-fill" id="fill-e" style="background:#5A9E00;width:0%"></div></div>
+        <div class="prog-lbl" id="lbl-e">1 / 10</div>
+        <div class="prog-score" id="sc-e">0 pt</div>
+      </div>
+      <div id="area-e"></div>
+    </div>
   </div>
-  <div id="quizArea"></div>
+</div>
+
+<!-- PAGE ADULTE -->
+<div class="page" id="page-adulte">
+  <div class="quiz-page">
+    <div class="quiz-header">
+      <button class="back" onclick="goHome()">← Accueil</button>
+      <h2>Quiz Expert</h2>
+      <p>Testez vos connaissances sur Thomery !</p>
+    </div>
+    <div class="qwrap">
+      <div class="prog" id="prog-a">
+        <div class="prog-track"><div class="prog-fill" id="fill-a" style="background:#5BADD6;width:0%"></div></div>
+        <div class="prog-lbl" id="lbl-a">1 / 13</div>
+        <div class="prog-score" id="sc-a">0 pt</div>
+      </div>
+      <div id="area-a"></div>
+    </div>
+  </div>
 </div>
 
 <script>
-const questions = [
-  {
-    text: "Quel a été le nom du premier festival cannin dans la ville de Thomery ?",
-    choices: ["WoofThom", "CanniThom", "ThomWoof", "CanniWoof"],
-    correct: 2,
-    explanation: "Le ThomWoof a été fait la premiere fois le 10 septembre 2024 dans les Jardin Salomon "},
-  {
-    text: "Comment la ville de Thomery est surnomée ?",
-    choices: ["La ville des vignes", "Village du raisin", "Village du vin", "Village de la vigne"],
-    correct: 3,
-    explanation: "La ville de thomery se surnomme le 'Village des vignes' en raison de sa culture traditionnelle du raisin, le chasselas. Cette ville est également connue pour son histoire riche et ses traditions, notamment la production du chasselas doré, qui a été une activité économique importante pendant plus de deux siècles."
-  },
-  {
-    text: "Pour quoi la ville de Thomery est-t-elle connue ?",
-    choices: ["Mairie", "Jardin Salomon", "Chasselas doré", "Eglise"],
-    correct: 2,
-    explanation: "La culture du Chasselas doré nécessite une attention particulière pour garantir une production optimale "},
-  {
-    text: "Quel artiste peintre et sculptri(ce)(eur) du XIX ème siècle est connu a Thomery ?",
-    choices: ["Pablo Picasso", "Rosa Bonheur", "Claude Monet", "Gustav Kilmt"],
-    correct: 1,
-    explanation: "Rosa Bonheur est connue à Thomery pour son rôle central dans la peinture animalière et son atelier, construit par l'architecte Jules Saulnier. Elle a acquis le château de By en 1859, où elle a vécu pendant quarante ans. Son atelier, qui a conservé ses décors peints, mobilier et effets personnels, est ouvert au public depuis 2017. Rosa Bonheur a également été la première femme à recevoir la Légion d'honneur, ce qui a marqué son époque et son impact sur l'art et la société. "
-  },  
-  {
-    text: "D'où provient le nom de la ville de Thomery de Henri IV",
-    choices: ["< Tout vas faire rire ici >", "< Tout me rit ici >", "< Ici tout me rit >", "< Ici il y a tout qui me rit >"],
-    correct: 2,
-    explanation: "La tradition locale prête à Henri IV un bon mot lors de son séjour dans la zone de Champagne-sur-Seine. En voyant le coteau de Thomery, il déclare : « Ici tout me rit »"
-  },
-  {
-    text: "Dans L'ancien temps qu'est-ce que le Jardin Salomon stockait ?",
-    choices: ["Des moutons", "Des Cheveaux", "Des vignes", "Caves a vin"],
-    correct: 2,
-    explanation: "Dans l'ancien temps ont stockais les vignes dans les serres et ont les cultivé au mur"
-  },
-  {
-    text: "Quel est le nom de la rivière qui passe dans la ville de Thomery ?",
-    choices: ["L'Orvanne", "Loing", "Rhône", "Seine"],
-    correct: 3,
-    explanation: "La seine descend de paris en passent par Thomery."
-  },
-    {
-    text: " Quelle est la particularité unique au monde du réseau de murs à vignes de Thomery ?",
-    choices: ["250 km", "100 km", "500 mètres", "400 km"],
-    correct: 0,
-    explanation: " Il s'étend sur 250 km, construit pour cultiver le chasselas doré en espalier sur des coteaux parfaitement orientés."
-  },
-    {
-    text: "Quelle était la production maximale de chasselas à Thomery vers 1900  ?",
-    choices: ["800 tonnes", "20 grammes", "500 tonnes", "Plus de 250 k/g"],
-    correct: 0,
-    explanation: "Vers 1900 la ville de Thomery etait fortement acrive"
-  },
-    {
-    text: "Rosa Bonheur était spécialisée dans la peinture de quoi ?",
-    choices: ["Animeaux", "Personnes", "Réaliste", "Abstrait"],
-    correct: 0,
-    explanation: "Rosa Bonheur s'est spécialisée dans la peinture animalières."
-  },
-    {
-    text: "Quelle grande forêt est située près de Thomery ?",
-    choices: ["Foêt de Fontainebleau", "Forêt des Landes", "Forêt de Haye", "Forêt de Tronçais"],
-    correct: 0,
-    explanation: "La forêt de Fontainebleau est la forêt la pljus proche de Thomery"
-  },
-    {
-    text: "En quelle année le dernier colis de chasselas a-t-il quitté Thomery ?",
-    choices: ["2015", "2010", "2026", "1970"],
-    correct: 3,
-    explanation: "Le dernier colis de chasselas a avoir quitté Thomery etait en 1970"
-  },
-    {
-    text: "Quelle émission de France 3 a mis Thomery en avant en 2024 ?",
-    choices: ["Le vin Tv ", "Le Village préféré des Français.", "Les Vignes a la TV", "La forêt du vin"],
-    correct: 1,
-    explanation: "Le Village préféré des Français ont mis Thomery en avant en 2024"
-  },
-    {
-    text: "Dans quel château vivait Rosa Bonheur à Thomery ?",
-    choices: ["Un Penthouse", "Le château de Chambord", "Le château de Versaille", "Le château de By"],
-    correct: 3,
-    explanation: "Le château de By a été sa maison pendant plusieurs anées"
-  },
-    {
-    text: "Quelle célébrité fit l'oraison funèbre du peintre Francis Gruber dans le cimetière de Thomery ?",
-    choices: ["Louis Aragon", "Pablo Piccasso", "Rosa Bonheur", "Alfred Sisley"],
-    correct: 0,
-    explanation: "Louis Aragon, et c'est Alberto Giacometti qui dessina sa tombe."
-  },
-    {
-    text: "Quels animaux insolites vivaient dans la ménagerie de Rosa Bonheur à Thomery ?",
-    choices: ["Vaches, chevaux, moutons, cerfs, et même une paire de lions apprivoisés.", "Des rongeurs", "Des animaux aquatiques"],
-    correct: 0,
-    explanation: "Rosa Bonheur est aussi connue pour avoir des animaux de toutes races"
-  },
-    {
-    text: "Quels animaux insolites vivaient dans la ménagerie de Rosa Bonheur à Thomery ?",
-    choices: ["Du vin", "vente d'un terrain", "sont tableau Le marché aux cheveaux", "de l'achat revente de raisins"],
-    correct: 2,
-    explanation: "Grâce à la vente de son tableau Le Marché aux chevaux, succès international du Salon de 1853."
-  },
-    {
-    text: "Qu'était 'Thomery-Plage', ouverte en 1925 ?",
-    choices: ["Station de loisir", "Port", "Barrage", "Pont"],
-    correct: 0,
-    explanation: "Une station de loisirs avec restaurant, salle de dancing animée par un jazz-band américain (le 'Patam-jazz'), baignade et promenades en barque, promue jusqu'à la Gare de Lyon à Paris."
-  },
-    {
-    text: "Quel roi de France a séjourné au château de la Rivière à Thomery en 1727 et 1732 ?",
-    choices: ["Louis XV", "Louis XIV", "Louis XVI", "Louis XIII"],
-    correct: 0,
-    explanation: "Louis XV, qui fit également paver le chemin menant de Thomery au château de Fontainebleau, l'Allée du Pavé du Prince."
-  },
-    {
-    text: "Quelle distinction Rosa Bonheur a-t-elle été la première femme à recevoir en 1865 ?",
-    choices: ["Ordres des Art et des Lettres", "Ordre National su Mérite", "Legion D'honneur", "Ordre de la libération "],
-    correct: 2,
-    explanation: "La Légion d'honneur, remise en main propre par l'impératrice Eugénie au château de By."
-  }
+const QE=[
+  {q:"Thomery se trouve en Seine-et-Marne.",r:true,e:"Oui ! Thomery est dans le département 77, la Seine-et-Marne."},
+  {q:"Le fruit célèbre de Thomery est la fraise.",r:false,e:"Non, c'est le raisin chasselas doré qui a rendu Thomery célèbre !"},
+  {q:"La forêt de Fontainebleau est proche de Thomery.",r:true,e:"Oui, la forêt de Fontainebleau borde directement le village."},
+  {q:"Rosa Bonheur était une chanteuse célèbre.",r:false,e:"Non ! Rosa Bonheur était une grande peintre, spécialisée dans les animaux."},
+  {q:"Rosa Bonheur avait des lions chez elle à Thomery.",r:true,e:"Oui, elle avait même une paire de lions apprivoisés dans sa ménagerie !"},
+  {q:"La Seine traverse Thomery.",r:true,e:"Oui, la Seine borde le village de Thomery."},
+  {q:"Thomery compte plus de 50 000 habitants.",r:false,e:"Non, Thomery est un petit village d'environ 3 500 habitants."},
+  {q:"Le château de Rosa Bonheur s'appelle le château de By.",r:true,e:"Exact ! Le château de By à Thomery est la maison-musée de Rosa Bonheur."},
+  {q:"Le chasselas de Thomery était envoyé jusqu'à Paris.",r:true,e:"Oui, les colis de raisin chasselas partaient régulièrement vers Paris !"},
+  {q:"Thomery a représenté l'Île-de-France dans Le Village préféré des Français en 2024.",r:true,e:"Oui ! Thomery a participé à cette émission sur France 3 en 2024."}
+];
+const QA=[
+  {q:"Dans quel département se trouve Thomery ?",ch:["Essonne (91)","Seine-et-Marne (77)","Yvelines (78)","Seine-Saint-Denis (93)"],c:1,e:"Thomery est en Seine-et-Marne, département 77."},
+  {q:"Quel fruit a rendu Thomery célèbre dans toute la France ?",ch:["La poire Williams","La cerise de Fontainebleau","Le chasselas doré","La framboise"],c:2,e:"Le chasselas doré, cultivé en espalier sur des murs, a fait la renommée de Thomery."},
+  {q:"Quel est le prénom de la célèbre peintre qui vécut à Thomery ?",ch:["Marie","Rosa","Louise","Hortense"],c:1,e:"Rosa Bonheur (1822–1899) vécut 40 ans au château de By à Thomery."},
+  {q:"Comment s'appelle le château où vivait Rosa Bonheur ?",ch:["Château de la Rivière","Château de By","Château de Fontainebleau","Château d'Effondré"],c:1,e:"Le château de By, dans le hameau de By-Thomery, est aujourd'hui un musée."},
+  {q:"Quelle décoration Rosa Bonheur reçut-elle en 1865 ?",ch:["La Médaille d'or du Salon","L'ordre de la Toison d'or","La Légion d'honneur","Le prix de l'Académie des Beaux-Arts"],c:2,e:"L'impératrice Eugénie lui remit en personne la Légion d'honneur au château de By."},
+  {q:"Quelle rivière traverse Thomery ?",ch:["L'Yonne","Le Loing","La Marne","La Seine"],c:3,e:"La Seine borde le village de Thomery et a inspiré de nombreux peintres."},
+  {q:"En quelle année le dernier colis de chasselas a-t-il quitté Thomery ?",ch:["1945","1958","1970","1982"],c:2,e:"Le dernier colis de raisin chasselas fut expédié à Paris en 1970."},
+  {q:"Combien d'habitants compte Thomery environ ?",ch:["800","3 500","12 000","45 000"],c:1,e:"Thomery est une commune d'environ 3 500 habitants."},
+  {q:"Quel label de tourisme Thomery a-t-il obtenu en 2014 ?",ch:["Ville d'art et d'histoire","Village de caractère","Petite cité de caractère","Station verte"],c:1,e:"Thomery a obtenu le label Village de caractère en 2014."},
+  {q:"Quel roi séjourna au château de la Rivière à Thomery en 1727 et 1732 ?",ch:["Louis XIV","Louis XV","Louis XVI","François Ier"],c:1,e:"Louis XV aimait séjourner à Thomery lors de ses visites à Fontainebleau."},
+  {q:"De quoi était spécialisée l'entreprise A.D.R. installée à Thomery ?",ch:["La fabrication de vin","Les roulements mécaniques pour l'aéronautique","L'imprimerie","La construction navale"],c:1,e:"A.D.R. était spécialisée en micromécanique aéronautique, rachetée par SKF en 1964."},
+  {q:"Qui a fait l'oraison funèbre du peintre Francis Gruber au cimetière de Thomery ?",ch:["André Malraux","Jean Cocteau","Louis Aragon","Pablo Picasso"],c:2,e:"Louis Aragon prononça l'oraison funèbre, et Giacometti dessina la tombe."},
+  {q:"Quelle émission de France 3 a mis Thomery en avant en 2024 ?",ch:["Des racines et des ailes","Le Village préféré des Français","Faut pas rêver","Échappées belles"],c:1,e:"Thomery a représenté l'Île-de-France dans Le Village préféré des Français en 2024."}
 ];
 
-let current = 0, score = 0, answered = false;
+let mode='',cur=0,score=0,answered=false;
+function show(id){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
+function goHome(){show('page-accueil');}
+function startQuiz(m){mode=m;cur=0;score=0;answered=false;show('page-'+m);render();}
+function render(){answered=false;mode==='enfant'?renderE():renderA();}
 
-function changeLogo(e) {
-  const file = e.target.files[0];
-  if (!file) return;
-  const url = URL.createObjectURL(file);
-  document.getElementById('logoContainer').innerHTML = `<img src="${url}">`;
-}
-
-function updateProgress() {
-  const pct = (current / questions.length) * 100;
-  document.getElementById('progressFill').style.width = pct + '%';
-  document.getElementById('progressLabel').textContent = `Question ${current + 1} / ${questions.length}`;
-  document.getElementById('scoreBadge').textContent = `Score : ${score}`;
-}
-
-function renderQuestion() {
-  answered = false;
-  updateProgress();
-  const q = questions[current];
-  const letters = ['A','B','C','D'];
-  const choicesHtml = q.choices.map((c, i) => `
-    <button class="choice-btn" onclick="answer(${i})" id="choice-${i}">
-      <span class="choice-letter">${letters[i]}</span>
-      <span>${c}</span>
-    </button>
-  `).join('');
-
-  document.getElementById('quizArea').innerHTML = `
-    <div class="card">
-      <div class="q-number">Question ${current + 1} sur ${questions.length}</div>
-      <div class="q-text">${q.text}</div>
-      ${q.hint ? `<div class="q-hint">${q.hint}</div>` : ''}
-      <div class="choices">${choicesHtml}</div>
-      <div id="feedback"></div>
-      <button class="next-btn" id="nextBtn" onclick="next()">
-        ${current < questions.length - 1 ? 'Question suivante →' : 'Voir mes résultats →'}
-      </button>
-    </div>
-  `;
-}
-
-function answer(idx) {
-  if (answered) return;
-  answered = true;
-  const q = questions[current];
-  const isCorrect = idx === q.correct;
-  if (isCorrect) score++;
-
-  document.querySelectorAll('.choice-btn').forEach(b => b.disabled = true);
-  document.getElementById(`choice-${idx}`).classList.add(isCorrect ? 'correct' : 'wrong');
-  if (!isCorrect) document.getElementById(`choice-${q.correct}`).classList.add('correct');
-
-  document.getElementById('feedback').innerHTML = isCorrect
-    ? `<div class="feedback-badge vrai"><span class="feedback-icon">✅</span><div class="feedback-text"><strong>Bonne réponse !</strong>${q.explanation || ''}</div></div>`
-    : `<div class="feedback-badge faux"><span class="feedback-icon">❌</span><div class="feedback-text"><strong>Mauvaise réponse.</strong> La bonne réponse était : <strong>${q.choices[q.correct]}</strong>.<br>${q.explanation || ''}</div></div>`;
-
-  document.getElementById('nextBtn').style.display = 'block';
-  document.getElementById('scoreBadge').textContent = `Score : ${score}`;
-}
-
-function next() {
-  current++;
-  if (current >= questions.length) showResults();
-  else renderQuestion();
-}
-
-function showResults() {
-  document.getElementById('progressSection').style.display = 'none';
-  const pct = Math.round((score / questions.length) * 100);
-  const msg = pct >= 80 ? 'Félicitations ! Vous connaissez parfaitement votre ville.'
-    : pct >= 50 ? 'Bon résultat ! Vous êtes bien informé(e) sur votre commune.'
-    : 'Il y a encore des choses à découvrir sur votre territoire !';
-
-  document.getElementById('quizArea').innerHTML = `
-    <div class="results-card">
-      <div class="results-circle">
-        <div class="results-score-big">${score}/${questions.length}</div>
-        <div class="results-score-denom">${pct} %</div>
+function renderE(){
+  const q=QE[cur],n=QE.length;
+  document.getElementById('fill-e').style.width=(cur/n*100)+'%';
+  document.getElementById('lbl-e').textContent=`${cur+1} / ${n}`;
+  document.getElementById('sc-e').textContent=`${score} pt`;
+  document.getElementById('area-e').innerHTML=`
+    <div class="qbox">
+      <div class="qn" style="color:#5A9E00">Question ${cur+1} sur ${n}</div>
+      <div class="qt">${q.q}</div>
+      <div class="tfg">
+        <button class="tfb vb" id="tv" onclick="aTF(true)"><span class="tfe">✅</span>VRAI</button>
+        <button class="tfb fb" id="tf" onclick="aTF(false)"><span class="tfe">❌</span>FAUX</button>
       </div>
-      <div class="results-title">Quiz terminé !</div>
-      <div class="results-sub">${msg}</div>
-      <div class="results-breakdown">
-        <div class="breakdown-item"><div class="breakdown-num green">${score}</div><div class="breakdown-lbl">Bonnes réponses</div></div>
-        <div class="breakdown-item"><div class="breakdown-num red">${questions.length - score}</div><div class="breakdown-lbl">Mauvaises réponses</div></div>
-        <div class="breakdown-item"><div class="breakdown-num">${pct} %</div><div class="breakdown-lbl">Score final</div></div>
+      <div id="fbe"></div>
+      <button class="btn-next" id="bne" onclick="nextQ()">${cur<n-1?'Question suivante →':'Voir mes résultats →'}</button>
+    </div>`;
+}
+
+function aTF(val){
+  if(answered)return;answered=true;
+  const q=QE[cur],ok=val===q.r;if(ok)score++;
+  document.getElementById('tv').disabled=true;document.getElementById('tf').disabled=true;
+  document.getElementById(val?'tv':'tf').classList.add(ok?'correct':'wrong');
+  if(!ok)document.getElementById(q.r?'tv':'tf').classList.add('correct');
+  document.getElementById('fbe').innerHTML=ok
+    ?`<div class="fb ok"><span class="fb-i">🎉</span><div class="fb-t"><strong>Bravo !</strong>${q.e}</div></div>`
+    :`<div class="fb ko"><span class="fb-i">😅</span><div class="fb-t"><strong>Pas tout à fait !</strong>${q.e}</div></div>`;
+  document.getElementById('bne').classList.add('show');
+  document.getElementById('sc-e').textContent=`${score} pt`;
+}
+
+function renderA(){
+  const q=QA[cur],n=QA.length,L=['A','B','C','D'];
+  document.getElementById('fill-a').style.width=(cur/n*100)+'%';
+  document.getElementById('lbl-a').textContent=`${cur+1} / ${n}`;
+  document.getElementById('sc-a').textContent=`${score} pt`;
+  document.getElementById('area-a').innerHTML=`
+    <div class="qbox">
+      <div class="qn" style="color:#5BADD6">Question ${cur+1} sur ${n}</div>
+      <div class="qt">${q.q}</div>
+      <div class="choices">${q.ch.map((c,i)=>`
+        <button class="cbtn" onclick="aQCM(${i})" id="c${i}">
+          <span class="cl">${L[i]}</span>${c}
+        </button>`).join('')}</div>
+      <div id="fba"></div>
+      <button class="btn-next" id="bna" onclick="nextQ()">${cur<n-1?'Question suivante →':'Voir mes résultats →'}</button>
+    </div>`;
+}
+
+function aQCM(idx){
+  if(answered)return;answered=true;
+  const q=QA[cur],ok=idx===q.c;if(ok)score++;
+  document.querySelectorAll('.cbtn').forEach(b=>b.disabled=true);
+  document.getElementById('c'+idx).classList.add(ok?'correct':'wrong');
+  if(!ok)document.getElementById('c'+q.c).classList.add('correct');
+  document.getElementById('fba').innerHTML=ok
+    ?`<div class="fb ok"><span class="fb-i">✅</span><div class="fb-t"><strong>Bonne réponse !</strong>${q.e}</div></div>`
+    :`<div class="fb ko"><span class="fb-i">❌</span><div class="fb-t"><strong>Mauvaise réponse.</strong>La bonne réponse était <strong style="color:#fff">${q.ch[q.c]}</strong>. ${q.e}</div></div>`;
+  document.getElementById('bna').classList.add('show');
+  document.getElementById('sc-a').textContent=`${score} pt`;
+}
+
+function nextQ(){cur++;const qs=mode==='enfant'?QE:QA;if(cur>=qs.length)showRes();else render();}
+
+function showRes(){
+  const qs=mode==='enfant'?QE:QA,n=qs.length,pct=Math.round(score/n*100);
+  const prog=mode==='enfant'?'prog-e':'prog-a',area=mode==='enfant'?'area-e':'area-a';
+  document.getElementById(prog).style.display='none';
+  const msg=pct>=80?'Félicitations ! Vous connaissez très bien Thomery !':pct>=50?'Pas mal ! Vous êtes bien informé(e) sur la commune.':'Il reste de belles choses à découvrir sur Thomery !';
+  document.getElementById(area).innerHTML=`
+    <div class="res">
+      <div class="res-ring"><div class="res-big">${score}/${n}</div><div class="res-pct">${pct}%</div></div>
+      <div class="res-title">Quiz terminé !</div>
+      <div class="res-sub">${msg}</div>
+      <div class="res-stats">
+        <div class="stat"><div class="stat-n g">${score}</div><div class="stat-l">Bonnes</div></div>
+        <div class="stat"><div class="stat-n r">${n-score}</div><div class="stat-l">Mauvaises</div></div>
+        <div class="stat"><div class="stat-n">${pct}%</div><div class="stat-l">Score</div></div>
       </div>
-      <button class="restart-btn" onclick="restart()">↺ Recommencer</button>
-    </div>
-  `;
+      <div class="res-btns">
+        <button class="btn-white" onclick="startQuiz('${mode}')">↺ Rejouer</button>
+        <button class="btn-ghost" onclick="goHome()">← Accueil</button>
+      </div>
+    </div>`;
 }
-
-function restart() {
-  current = 0; score = 0;
-  document.getElementById('progressSection').style.display = 'flex';
-  renderQuestion();
-}
-
-renderQuestion();
 </script>
-</body>
-</html>

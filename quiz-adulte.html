@@ -230,69 +230,179 @@ let cur = 0;
 let score = 0;
 let answered = false;
 
-const L = ['A', 'B', 'C', 'D'];
-
-let cur = 0;
-let score = 0;
-let answered = false;
-  
 function render(){
-  answered=false;
-  const q=Q[cur],n=Q.length;
-  document.getElementById('fill').style.width=(cur/n*100)+'%';
-  document.getElementById('lbl').textContent=`${cur+1} / ${n}`;
-  document.getElementById('sc').textContent=`${score} pt`;
-  document.getElementById('area').innerHTML=`
+  answered = false;
+
+  const q = Q[cur];
+  const n = Q.length;
+
+  document.getElementById('fill').style.width = ((cur + 1) / n * 100) + '%';
+  document.getElementById('lbl').textContent = `${cur + 1} / ${n}`;
+  document.getElementById('sc').textContent = `${score} pt`;
+
+  document.getElementById('area').innerHTML = `
     <div class="qbox">
-      <div class="qn" style="color:#5BADD6">Question ${cur+1} sur ${n}</div>
+      <div class="qn" style="color:#5BADD6">
+        Question ${cur + 1} sur ${n}
+      </div>
+
       <div class="qt">${q.q}</div>
-      <div class="choices">${q.ch.map((c,i)=>`
-        <button class="cbtn" onclick="aQCM(${i})" id="c${i}">
-          <span class="cl">${L[i]}</span>${c}
-        </button>`).join('')}</div>
+
+      <div class="choices">
+        ${q.ch.map((choice, i) => `
+          <button class="cbtn" onclick="aQCM(${i})" id="c${i}">
+            <span class="cl">${L[i]}</span>
+            ${choice}
+          </button>
+        `).join('')}
+      </div>
+
       <div id="fba"></div>
-      <button class="btn-next" id="bn" onclick="next()">${cur<n-1?'Question suivante →':'Voir mes résultats →'}</button>
-    </div>`;
+
+      <button class="btn-next" id="bn" onclick="next()" style="display:none;">
+        ${cur < n - 1 ? 'Question suivante →' : 'Voir mes résultats →'}
+      </button>
+    </div>
+  `;
 }
 
 function aQCM(idx){
-  if(answered)return;answered=true;
-  const q=Q[cur],ok=idx===q.c;if(ok)score++;
-  document.querySelectorAll('.cbtn').forEach(b=>b.disabled=true);
-  document.getElementById('c'+idx).classList.add(ok?'correct':'wrong');
-  if(!ok)document.getElementById('c'+q.c).classList.add('correct');
-  document.getElementById('fba').innerHTML=ok
-    ?`<div class="fb ok"><span class="fb-i">✅</span><div class="fb-t"><strong>Bonne réponse !</strong>${q.e}</div></div>`
-    :`<div class="fb ko"><span class="fb-i">❌</span><div class="fb-t"><strong>Mauvaise réponse.</strong> La bonne réponse était <strong style="color:#fff">${q.ch[q.c]}</strong>. ${q.e}</div></div>`;
-  document.getElementById('bn').classList.add('show');
-  document.getElementById('sc').textContent=`${score} pt`;
+
+  if(answered) return;
+
+  answered = true;
+
+  const q = Q[cur];
+
+  const ok = idx === q.c;
+
+  if(ok) score++;
+
+  document.querySelectorAll('.cbtn').forEach(btn=>{
+    btn.disabled = true;
+  });
+
+  document.getElementById('c'+idx)
+    .classList.add(ok ? 'correct' : 'wrong');
+
+  if(!ok){
+    document.getElementById('c'+q.c)
+      .classList.add('correct');
+  }
+
+  document.getElementById('fba').innerHTML = ok
+    ? `
+      <div class="fb ok">
+        <span class="fb-i">✅</span>
+        <div class="fb-t">
+          <strong>Bonne réponse !</strong><br>
+          ${q.e}
+        </div>
+      </div>
+    `
+    : `
+      <div class="fb ko">
+        <span class="fb-i">❌</span>
+        <div class="fb-t">
+          <strong>Mauvaise réponse.</strong><br>
+          La bonne réponse était :
+          <strong style="color:#fff">${q.ch[q.c]}</strong><br>
+          ${q.e}
+        </div>
+      </div>
+    `;
+
+  document.getElementById('bn').style.display = 'block';
+
+  document.getElementById('sc').textContent = `${score} pt`;
 }
 
 function next(){
+
   cur++;
-  if(cur>=Q.length)showRes();else render();
+
+  if(cur >= Q.length){
+    showRes();
+  }else{
+    render();
+  }
+
 }
 
 function showRes(){
-  const n=Q.length,pct=Math.round(score/n*100);
-  document.getElementById('prog').style.display='none';
-  const msg=pct>=80?'Félicitations ! Vous connaissez très bien Thomery !':pct>=50?'Pas mal ! Vous êtes bien informé(e) sur la commune.':'Il reste encore de belles choses à découvrir sur Thomery !';
-  document.getElementById('area').innerHTML=`
+
+  const n = Q.length;
+
+  const pct = Math.round(score / n * 100);
+
+  document.getElementById('prog').style.display = 'none';
+
+  let msg = '';
+
+  if(pct >= 80){
+    msg = 'Félicitations ! Vous connaissez très bien Thomery !';
+  }
+  else if(pct >= 50){
+    msg = 'Pas mal ! Vous êtes bien informé(e) sur la commune.';
+  }
+  else{
+    msg = 'Il reste encore de belles choses à découvrir sur Thomery !';
+  }
+
+  document.getElementById('area').innerHTML = `
     <div class="res">
-      <div class="res-ring"><div class="res-big">${score}/${n}</div><div class="res-pct">${pct}%</div></div>
-      <div class="res-title">Quiz terminé !</div>
-      <div class="res-sub">${msg}</div>
+
+      <div class="res-ring">
+        <div class="res-big">${score}/${n}</div>
+        <div class="res-pct">${pct}%</div>
+      </div>
+
+      <div class="res-title">
+        Quiz terminé !
+      </div>
+
+      <div class="res-sub">
+        ${msg}
+      </div>
+
       <div class="res-stats">
-        <div class="stat"><div class="stat-n g">${score}</div><div class="stat-l">Bonnes</div></div>
-        <div class="stat"><div class="stat-n r">${n-score}</div><div class="stat-l">Mauvaises</div></div>
-        <div class="stat"><div class="stat-n">${pct}%</div><div class="stat-l">Score</div></div>
+
+        <div class="stat">
+          <div class="stat-n g">${score}</div>
+          <div class="stat-l">Bonnes</div>
+        </div>
+
+        <div class="stat">
+          <div class="stat-n r">${n-score}</div>
+          <div class="stat-l">Mauvaises</div>
+        </div>
+
+        <div class="stat">
+          <div class="stat-n">${pct}%</div>
+          <div class="stat-l">Score</div>
+        </div>
+
       </div>
+
       <div class="res-btns">
-        <button class="btn-white" onclick="cur=0;score=0;document.getElementById('prog').style.display='flex';render()">↺ Rejouer</button>
-        <a href="index.html" class="btn-ghost">← Accueil</a>
-        <a href="avis.html" class="btn-ghost">⭐ Donner mon avis</a>
+
+        <button class="btn-white"
+          onclick="cur=0;score=0;document.getElementById('prog').style.display='flex';render()">
+          ↺ Rejouer
+        </button>
+
+        <a href="index.html" class="btn-ghost">
+          ← Accueil
+        </a>
+
+        <a href="avis.html" class="btn-ghost">
+          ⭐ Donner mon avis
+        </a>
+
       </div>
-    </div>`;
+
+    </div>
+  `;
 }
 
 render();

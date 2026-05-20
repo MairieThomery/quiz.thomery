@@ -24,7 +24,7 @@
 
 <div class="quiz-wrap">
   <div class="quiz-header">
-    <a href="accueil.html" class="back">← Accueil</a>
+    <a href="index.html" class="back">← Accueil</a>
     <h2>Quiz Expert</h2>
     <p>Testez vos connaissances sur Thomery !</p>
   </div>
@@ -43,19 +43,27 @@
 
 <script>
 const Q=[
-  {q:"Dans quel département se trouve Thomery ?",ch:["Essonne (91)","Seine-et-Marne (77)","Yvelines (78)","Seine-Saint-Denis (93)"],c:1,e:"Thomery est en Seine-et-Marne, département 77."},
-  {q:"Quel fruit a rendu Thomery célèbre dans toute la France ?",ch:["La poire Williams","La cerise de Fontainebleau","Le chasselas doré","La framboise"],c:2,e:"Le chasselas doré, cultivé en espalier sur des murs, a fait la renommée de Thomery."},
-  {q:"Quel est le prénom de la célèbre peintre qui vécut à Thomery ?",ch:["Marie","Rosa","Louise","Hortense"],c:1,e:"Rosa Bonheur (1822–1899) vécut 40 ans au château de By à Thomery."},
-  {q:"Comment s'appelle le château où vivait Rosa Bonheur ?",ch:["Château de la Rivière","Château de By","Château de Fontainebleau","Château d'Effondré"],c:1,e:"Le château de By, dans le hameau de By-Thomery, est aujourd'hui un musée."},
-  {q:"Quelle décoration Rosa Bonheur reçut-elle en 1865 ?",ch:["La Médaille d'or du Salon","L'ordre de la Toison d'or","La Légion d'honneur","Le prix de l'Académie des Beaux-Arts"],c:2,e:"L'impératrice Eugénie lui remit en personne la Légion d'honneur au château de By."},
-  {q:"Quelle rivière traverse Thomery ?",ch:["L'Yonne","Le Loing","La Marne","La Seine"],c:3,e:"La Seine borde le village de Thomery et a inspiré de nombreux peintres."},
-  {q:"En quelle année le dernier colis de chasselas a-t-il quitté Thomery ?",ch:["1945","1958","1970","1982"],c:2,e:"Le dernier colis de raisin chasselas fut expédié à Paris en 1970."},
-  {q:"Combien d'habitants compte Thomery environ ?",ch:["800","3 500","12 000","45 000"],c:1,e:"Thomery est une commune d'environ 3 500 habitants."},
-  {q:"Quel label de tourisme Thomery a-t-il obtenu en 2014 ?",ch:["Ville d'art et d'histoire","Village de caractère","Petite cité de caractère","Station verte"],c:1,e:"Thomery a obtenu le label Village de caractère en 2014."},
-  {q:"Quel roi séjourna au château de la Rivière à Thomery en 1727 et 1732 ?",ch:["Louis XIV","Louis XV","Louis XVI","François Ier"],c:1,e:"Louis XV aimait séjourner à Thomery lors de ses visites à Fontainebleau."},
-  {q:"De quoi était spécialisée l'entreprise A.D.R. installée à Thomery ?",ch:["La fabrication de vin","Les roulements mécaniques pour l'aéronautique","L'imprimerie","La construction navale"],c:1,e:"A.D.R. était spécialisée en micromécanique aéronautique, rachetée par SKF en 1964."},
-  {q:"Qui a fait l'oraison funèbre du peintre Francis Gruber au cimetière de Thomery ?",ch:["André Malraux","Jean Cocteau","Louis Aragon","Pablo Picasso"],c:2,e:"Louis Aragon prononça l'oraison funèbre, et Giacometti dessina la tombe."},
+  {q:"Quel a été le nom du premier festival cannin dans la ville de Thomery ?",ch:["WoofThom","CanniThom","ThomWoof","CanniWoof"],c:3,e:"Le ThomWoof a été fait la premiere fois le 10 septembre 2024 dans les Jardin Salomon},
+  {q:"Comment la ville de Thomery est surnomée ?",ch:["La ville des vignes", "Village du raisin", "Village du vin", "Village de la vigne"]c:4,e:"La ville de thomery se surnomme le 'Village des vignes' en raison de sa culture traditionnelle du raisin, le chasselas. Cette ville est également connue pour son histoire riche et ses traditions, notamment la production du chasselas doré, qui a été une activité économique importante pendant plus de deux siècles."},
+  {q:"Pour quoi la ville de Thomery est-t-elle connue ?",ch:["Mairie", "Jardin Salomon", "Chasselas doré", "Eglise"],c:3,e:"La culture du Chasselas doré nécessite une attention particulière pour garantir une production optimale "},
+  {q:"Quel artiste peintre et sculptri(ce)(eur) du XIX ème siècle est connu a Thomery ?",ch:["Pablo Picasso", "Rosa Bonheur", "Claude Monet", "Gustav Kilmt"],c:2,e:"Rosa Bonheur est connue à Thomery pour son rôle central dans la peinture animalière et son atelier, construit par l'architecte Jules Saulnier. Elle a acquis le château de By en 1859, où elle a vécu pendant quarante ans. Son atelier, qui a conservé ses décors peints, mobilier et effets personnels, est ouvert au public depuis 2017. Rosa Bonheur a également été la première femme à recevoir la Légion d'honneur, ce qui a marqué son époque et son impact sur l'art et la société."},
+  {q:"D'où provient le nom de la ville de Thomery de Henri IV",ch:["< Tout vas faire rire ici >", "< Tout me rit ici >", "< D'ici tout me rit >", "< Ici il y a tout qui me rit >"],c:3,e:"La tradition locale prête à Henri IV un bon mot lors de son séjour dans la zone de Champagne-sur-Seine. En voyant le coteau de Thomery, il déclare : « Ici tout me rit »"},
+  {q:"Dans L'ancien temps qu'est-ce que le Jardin Salomon stockait ?",ch:["Des moutons", "Des Cheveaux", "Des vignes", "Caves a vin"],c:3,e:"Dans l'ancien temps ont stockais les vignes dans les serres et ont les cultivé au mur"},
+  {q:"Quel est le nom du fleuve qui passe dans la ville de Thomery ? ?",ch:["L'Orvanne", "Loing", "Rhône", "Seine"],c:4,e:"La seine descend de paris en passent par Thomery."},
+  {q:"Quelle est la longueur unique au monde du réseau de murs à vignes de Thomery ?",ch:["250 km", "100 km", "500 mètres", "400 km"],c:1,e:"Il s'étend sur 250 km, construit pour cultiver le chasselas doré en espalier sur des coteaux parfaitement orientés."},
+  {q:"Quelle était la production maximale de chasselas à Thomery vers 1900 ?",ch:["800 tonnes", "20 grammes", "500 tonnes", "Plus de 250 k/g"],c:1,e:"Vers 1900 la ville de Thomery etait fortement acrive"},
+  {q:"Rosa Bonheur était spécialisée dans la peinture de quoi ?",ch:["Animeaux", "Personnes", "Réaliste", "Abstrait"],c:1,e:"Rosa Bonheur s'est spécialisée dans la peinture animalières."},
+  {q:"Quelle grande forêt est située près de Thomery ?",ch:["Foêt de Fontainebleau", "Forêt des Landes", "Forêt de Haye", "Forêt de Tronçais"],c:1,e:"La forêt de Fontainebleau est la forêt la pljus proche de Thomery"},
+  {q:"En quelle année le dernier colis de chasselas a-t-il quitté Thomery ?",ch:["2015", "2010", "2026", "1970"],c:2,e:"Le dernier colis de chasselas a avoir quitté Thomery etait en 1970"},
   {q:"Quelle émission de France 3 a mis Thomery en avant en 2024 ?",ch:["Des racines et des ailes","Le Village préféré des Français","Faut pas rêver","Échappées belles"],c:1,e:"Thomery a représenté l'Île-de-France dans Le Village préféré des Français en 2024."}
+  {q:"Dans quel château vivait Rosa Bonheur à Thomery ?",ch:["Un Penthouse", "Le château de Chambord", "Le château de Versaille", "Le château de By"],c:4,e:"Le château de By a été sa maison pendant plusieurs anées"},
+  {q:"Quelle célébrité fit l'oraison funèbre du peintre Francis Gruber dans le cimetière de Thomery ?",ch:["Louis Aragon", "Pablo Piccasso", "Rosa Bonheur", "Alfred Sisley"],c:1,e:"Louis Aragon, et c'est Alberto Giacometti qui dessina sa tombe."},
+  {q:"Quels animaux insolites vivaient dans la ménagerie de Rosa Bonheur à Thomery ?",ch:["Vaches, chevaux, moutons, cerfs, et même une paire de lions apprivoisés.", "Des rongeur", "Des animeaux aquatiques"],c:1,e:"Rosa Bonheur est aussi connue pour avoir des animeaux de toutes races"},
+  {q:"Comment Rosa Bonheur a-t-elle financé l'achat du château de By à Thomery ?",ch:["Du vin", "Une vente de terrains", "Son tableau ' Le Marché aux chevaux '"],c:2,e:"Grâce à la vente de son tableau Le Marché aux chevaux, succès international du Salon de 1853."},
+  {q:"Qu'était 'Thomery-Plage', ouverte en 1925 ?",ch:["Station de loisir", "Port", "Barrage", "Pont"],c:1,e:"Une station de loisirs avec restaurant, salle de dancing animée par un jazz-band américain (le 'Patam-jazz'), baignade et promenades en barque, promue jusqu'à la Gare de Lyon à Paris."},
+  {q:"Quel roi de France a séjourné au château de la Rivière à Thomery en 1727 et 1732 ?",ch:["Louis XV", "Louis XIV", "Louis XVI", "Louis XIII"],c:1,e:"Louis XV, qui fit également paver le chemin menant de Thomery au château de Fontainebleau, l'Allée du Pavé du Prince."},
+  {q:"Quelle distinction Rosa Bonheur a-t-elle été la première femme à recevoir en 1865 ?",ch:["Ordres des Art et des Lettres", "Ordre National su Mérite", "Legion D'honneur", "Ordre de la libération "],c:3,e:"La Légion d'honneur, remise en main propre par l'impératrice Eugénie au château de By."},
+
 ];
 
 const L=['A','B','C','D'];
@@ -114,7 +122,7 @@ function showRes(){
       </div>
       <div class="res-btns">
         <button class="btn-white" onclick="cur=0;score=0;document.getElementById('prog').style.display='flex';render()">↺ Rejouer</button>
-        <a href="accueil.html" class="btn-ghost">← Accueil</a>
+        <a href="index.html" class="btn-ghost">← Accueil</a>
         <a href="avis.html" class="btn-ghost">⭐ Donner mon avis</a>
       </div>
     </div>`;

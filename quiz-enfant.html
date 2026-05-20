@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz Junior – Thomery</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">
+    <div class="nav-mark">
+      <svg viewBox="0 0 22 22" fill="none">
+        <rect x="1" y="9" width="20" height="12" rx="2" fill="white" opacity=".9"/>
+        <polygon points="0,10 11,1 22,10" fill="white"/>
+        <rect x="7" y="14" width="8" height="7" rx="1" fill="#5BADD6"/>
+      </svg>
+    </div>
+    <span class="nav-name">Thomery</span>
+  </div>
+  <span class="nav-tag">Quiz Citoyen</span>
+</nav>
+
+<div class="quiz-wrap">
+  <div class="quiz-header">
+    <a href="accueil.html" class="back">← Accueil</a>
+    <h2>Quiz Junior</h2>
+    <p>Vrai ou Faux ? À toi de jouer !</p>
+  </div>
+
+  <div class="qwrap">
+    <div class="prog" id="prog">
+      <div class="prog-track">
+        <div class="prog-fill" id="fill" style="background:#5A9E00;width:0%"></div>
+      </div>
+      <div class="prog-lbl" id="lbl">1 / 10</div>
+      <div class="prog-score" id="sc">0 pt</div>
+    </div>
+    <div id="area"></div>
+  </div>
+</div>
+
+<script>
+const Q=[
+  {q:"Thomery se trouve en Seine-et-Marne.",r:true,e:"Oui ! Thomery est dans le département 77, la Seine-et-Marne."},
+  {q:"Le fruit célèbre de Thomery est la fraise.",r:false,e:"Non, c'est le raisin chasselas doré qui a rendu Thomery célèbre !"},
+  {q:"La forêt de Fontainebleau est proche de Thomery.",r:true,e:"Oui, la forêt de Fontainebleau borde directement le village."},
+  {q:"Rosa Bonheur était une chanteuse célèbre.",r:false,e:"Non ! Rosa Bonheur était une grande peintre, spécialisée dans les animaux."},
+  {q:"Rosa Bonheur avait des lions chez elle à Thomery.",r:true,e:"Oui, elle avait même une paire de lions apprivoisés dans sa ménagerie !"},
+  {q:"La Seine traverse Thomery.",r:true,e:"Oui, la Seine borde le village de Thomery."},
+  {q:"Thomery compte plus de 50 000 habitants.",r:false,e:"Non, Thomery est un petit village d'environ 3 500 habitants."},
+  {q:"Le château de Rosa Bonheur s'appelle le château de By.",r:true,e:"Exact ! Le château de By à Thomery est la maison-musée de Rosa Bonheur."},
+  {q:"Le chasselas de Thomery était envoyé jusqu'à Paris.",r:true,e:"Oui, les colis de raisin chasselas partaient régulièrement vers Paris !"},
+  {q:"Thomery a représenté l'Île-de-France dans Le Village préféré des Français en 2024.",r:true,e:"Oui ! Thomery a participé à cette émission sur France 3 en 2024."}
+];
+
+let cur=0,score=0,answered=false;
+
+function render(){
+  answered=false;
+  const q=Q[cur],n=Q.length;
+  document.getElementById('fill').style.width=(cur/n*100)+'%';
+  document.getElementById('lbl').textContent=`${cur+1} / ${n}`;
+  document.getElementById('sc').textContent=`${score} pt`;
+  document.getElementById('area').innerHTML=`
+    <div class="qbox">
+      <div class="qn" style="color:#5A9E00">Question ${cur+1} sur ${n}</div>
+      <div class="qt">${q.q}</div>
+      <div class="tfg">
+        <button class="tfb vb" id="tv" onclick="aTF(true)"><span class="tfe">✅</span>VRAI</button>
+        <button class="tfb fb" id="tf" onclick="aTF(false)"><span class="tfe">❌</span>FAUX</button>
+      </div>
+      <div id="fbe"></div>
+      <button class="btn-next" id="bn" onclick="next()">${cur<n-1?'Question suivante →':'Voir mes résultats →'}</button>
+    </div>`;
+}
+
+function aTF(val){
+  if(answered)return;answered=true;
+  const q=Q[cur],ok=val===q.r;if(ok)score++;
+  document.getElementById('tv').disabled=true;
+  document.getElementById('tf').disabled=true;
+  document.getElementById(val?'tv':'tf').classList.add(ok?'correct':'wrong');
+  if(!ok)document.getElementById(q.r?'tv':'tf').classList.add('correct');
+  document.getElementById('fbe').innerHTML=ok
+    ?`<div class="fb ok"><span class="fb-i">🎉</span><div class="fb-t"><strong>Bravo !</strong>${q.e}</div></div>`
+    :`<div class="fb ko"><span class="fb-i">😅</span><div class="fb-t"><strong>Pas tout à fait !</strong>${q.e}</div></div>`;
+  document.getElementById('bn').classList.add('show');
+  document.getElementById('sc').textContent=`${score} pt`;
+}
+
+function next(){
+  cur++;
+  if(cur>=Q.length)showRes();else render();
+}
+
+function showRes(){
+  const n=Q.length,pct=Math.round(score/n*100);
+  document.getElementById('prog').style.display='none';
+  const msg=pct>=80?'Bravo ! Tu connais très bien Thomery !':pct>=50?'Pas mal ! Tu es bien informé(e) sur ta ville.':'Il reste encore des choses à découvrir sur Thomery !';
+  document.getElementById('area').innerHTML=`
+    <div class="res">
+      <div class="res-ring"><div class="res-big">${score}/${n}</div><div class="res-pct">${pct}%</div></div>
+      <div class="res-title">Quiz terminé !</div>
+      <div class="res-sub">${msg}</div>
+      <div class="res-stats">
+        <div class="stat"><div class="stat-n g">${score}</div><div class="stat-l">Bonnes</div></div>
+        <div class="stat"><div class="stat-n r">${n-score}</div><div class="stat-l">Mauvaises</div></div>
+        <div class="stat"><div class="stat-n">${pct}%</div><div class="stat-l">Score</div></div>
+      </div>
+      <div class="res-btns">
+        <button class="btn-white" onclick="cur=0;score=0;document.getElementById('prog').style.display='flex';render()">↺ Rejouer</button>
+        <a href="accueil.html" class="btn-ghost">← Accueil</a>
+        <a href="avis.html" class="btn-ghost">⭐ Donner mon avis</a>
+      </div>
+    </div>`;
+}
+
+render();
+</script>
+</body>
+</html>

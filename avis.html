@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Votre avis – Thomery</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">
+    <div class="nav-mark">
+      <svg viewBox="0 0 22 22" fill="none">
+        <rect x="1" y="9" width="20" height="12" rx="2" fill="white" opacity=".9"/>
+        <polygon points="0,10 11,1 22,10" fill="white"/>
+        <rect x="7" y="14" width="8" height="7" rx="1" fill="#5BADD6"/>
+      </svg>
+    </div>
+    <span class="nav-name">Thomery</span>
+  </div>
+  <span class="nav-tag">Quiz Citoyen</span>
+</nav>
+
+<div class="avis-wrap">
+  <div class="avis-hero">
+    <a href="accueil.html" class="back">← Accueil</a>
+    <h2>Donnez votre avis</h2>
+    <p>Votre retour nous aide à améliorer l'expérience pour tous les habitants de Thomery.</p>
+  </div>
+
+  <div class="form-box">
+    <div class="fcard" id="formCard">
+
+      <div class="frow-2" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:22px;">
+        <div class="frow" style="margin-bottom:0">
+          <label>Prénom *</label>
+          <input type="text" id="prenom" placeholder="Votre prénom">
+        </div>
+        <div class="frow" style="margin-bottom:0">
+          <label>Nom *</label>
+          <input type="text" id="nom" placeholder="Votre nom">
+        </div>
+      </div>
+
+      <div class="frow">
+        <label>Quiz réalisé</label>
+        <select id="quiz" style="width:100%;padding:13px 16px;border-radius:12px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);color:#fff;font-family:'Inter',sans-serif;font-size:14px;">
+          <option value="Junior" style="background:#1a1a1a">Quiz Junior (enfants)</option>
+          <option value="Expert" style="background:#1a1a1a">Quiz Expert (adultes)</option>
+          <option value="Les deux" style="background:#1a1a1a">Les deux</option>
+        </select>
+      </div>
+
+      <div class="frow">
+        <label>Votre note *</label>
+        <div class="stars" id="stars">
+          <span class="star" data-v="1">★</span>
+          <span class="star" data-v="2">★</span>
+          <span class="star" data-v="3">★</span>
+          <span class="star" data-v="4">★</span>
+          <span class="star" data-v="5">★</span>
+        </div>
+        <div id="note-label" style="font-size:12px;color:rgba(255,255,255,.3);margin-top:8px;">Cliquez sur une étoile</div>
+      </div>
+
+      <div class="frow">
+        <label>Votre commentaire</label>
+        <textarea id="commentaire" placeholder="Partagez votre expérience, vos suggestions…"></textarea>
+      </div>
+
+      <div id="error-msg" style="color:#e07070;font-size:13px;margin-bottom:14px;display:none;">Veuillez remplir les champs obligatoires (prénom, nom et note).</div>
+
+      <button class="btn-submit" onclick="submit()">Envoyer mon avis →</button>
+    </div>
+
+    <div class="success-box" id="successBox">
+      <div class="success-icon">🎉</div>
+      <div class="success-title">Merci pour votre avis !</div>
+      <div class="success-sub">Votre retour a bien été enregistré.<br>Il nous aide à améliorer le quiz pour tous les habitants.</div>
+      <a href="accueil.html" class="btn-white">← Retour à l'accueil</a>
+    </div>
+  </div>
+</div>
+
+<script>
+let note = 0;
+const labels = ['', 'Très décevant', 'Décevant', 'Correct', 'Bien', 'Excellent !'];
+
+document.querySelectorAll('.star').forEach(s => {
+  s.addEventListener('click', () => {
+    note = parseInt(s.dataset.v);
+    document.querySelectorAll('.star').forEach(st => {
+      st.classList.toggle('active', parseInt(st.dataset.v) <= note);
+      st.style.color = parseInt(st.dataset.v) <= note ? '#D4B84A' : '';
+    });
+    document.getElementById('note-label').textContent = labels[note];
+    document.getElementById('note-label').style.color = '#D4B84A';
+  });
+  s.addEventListener('mouseenter', () => {
+    const v = parseInt(s.dataset.v);
+    document.querySelectorAll('.star').forEach(st => {
+      st.style.opacity = parseInt(st.dataset.v) <= v ? '1' : '0.2';
+    });
+  });
+  s.addEventListener('mouseleave', () => {
+    document.querySelectorAll('.star').forEach(st => {
+      st.style.opacity = parseInt(st.dataset.v) <= note ? '1' : '0.25';
+    });
+  });
+});
+
+// Données stockées localement (pour copier-coller)
+let avis = JSON.parse(localStorage.getItem('thomery_avis') || '[]');
+
+function submit() {
+  const prenom = document.getElementById('prenom').value.trim();
+  const nom = document.getElementById('nom').value.trim();
+  const err = document.getElementById('error-msg');
+
+  if (!prenom || !nom || note === 0) {
+    err.style.display = 'block';
+    return;
+  }
+  err.style.display = 'none';
+
+  const entry = {
+    date: new Date().toLocaleDateString('fr-FR'),
+    prenom,
+    nom,
+    quiz: document.getElementById('quiz').value,
+    note,
+    commentaire: document.getElementById('commentaire').value.trim()
+  };
+
+  avis.push(entry);
+  localStorage.setItem('thomery_avis', JSON.stringify(avis));
+
+  document.getElementById('formCard').style.display = 'none';
+  document.getElementById('successBox').style.display = 'block';
+}
+</script>
+</body>
+</html>

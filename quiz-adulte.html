@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz Expert – Thomery</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">
+    <div class="nav-mark">
+      <svg viewBox="0 0 22 22" fill="none">
+        <rect x="1" y="9" width="20" height="12" rx="2" fill="white" opacity=".9"/>
+        <polygon points="0,10 11,1 22,10" fill="white"/>
+        <rect x="7" y="14" width="8" height="7" rx="1" fill="#5BADD6"/>
+      </svg>
+    </div>
+    <span class="nav-name">Thomery</span>
+  </div>
+  <span class="nav-tag">Quiz Citoyen</span>
+</nav>
+
+<div class="quiz-wrap">
+  <div class="quiz-header">
+    <a href="accueil.html" class="back">← Accueil</a>
+    <h2>Quiz Expert</h2>
+    <p>Testez vos connaissances sur Thomery !</p>
+  </div>
+
+  <div class="qwrap">
+    <div class="prog" id="prog">
+      <div class="prog-track">
+        <div class="prog-fill" id="fill" style="background:#5BADD6;width:0%"></div>
+      </div>
+      <div class="prog-lbl" id="lbl">1 / 13</div>
+      <div class="prog-score" id="sc">0 pt</div>
+    </div>
+    <div id="area"></div>
+  </div>
+</div>
+
+<script>
+const Q=[
+  {q:"Dans quel département se trouve Thomery ?",ch:["Essonne (91)","Seine-et-Marne (77)","Yvelines (78)","Seine-Saint-Denis (93)"],c:1,e:"Thomery est en Seine-et-Marne, département 77."},
+  {q:"Quel fruit a rendu Thomery célèbre dans toute la France ?",ch:["La poire Williams","La cerise de Fontainebleau","Le chasselas doré","La framboise"],c:2,e:"Le chasselas doré, cultivé en espalier sur des murs, a fait la renommée de Thomery."},
+  {q:"Quel est le prénom de la célèbre peintre qui vécut à Thomery ?",ch:["Marie","Rosa","Louise","Hortense"],c:1,e:"Rosa Bonheur (1822–1899) vécut 40 ans au château de By à Thomery."},
+  {q:"Comment s'appelle le château où vivait Rosa Bonheur ?",ch:["Château de la Rivière","Château de By","Château de Fontainebleau","Château d'Effondré"],c:1,e:"Le château de By, dans le hameau de By-Thomery, est aujourd'hui un musée."},
+  {q:"Quelle décoration Rosa Bonheur reçut-elle en 1865 ?",ch:["La Médaille d'or du Salon","L'ordre de la Toison d'or","La Légion d'honneur","Le prix de l'Académie des Beaux-Arts"],c:2,e:"L'impératrice Eugénie lui remit en personne la Légion d'honneur au château de By."},
+  {q:"Quelle rivière traverse Thomery ?",ch:["L'Yonne","Le Loing","La Marne","La Seine"],c:3,e:"La Seine borde le village de Thomery et a inspiré de nombreux peintres."},
+  {q:"En quelle année le dernier colis de chasselas a-t-il quitté Thomery ?",ch:["1945","1958","1970","1982"],c:2,e:"Le dernier colis de raisin chasselas fut expédié à Paris en 1970."},
+  {q:"Combien d'habitants compte Thomery environ ?",ch:["800","3 500","12 000","45 000"],c:1,e:"Thomery est une commune d'environ 3 500 habitants."},
+  {q:"Quel label de tourisme Thomery a-t-il obtenu en 2014 ?",ch:["Ville d'art et d'histoire","Village de caractère","Petite cité de caractère","Station verte"],c:1,e:"Thomery a obtenu le label Village de caractère en 2014."},
+  {q:"Quel roi séjourna au château de la Rivière à Thomery en 1727 et 1732 ?",ch:["Louis XIV","Louis XV","Louis XVI","François Ier"],c:1,e:"Louis XV aimait séjourner à Thomery lors de ses visites à Fontainebleau."},
+  {q:"De quoi était spécialisée l'entreprise A.D.R. installée à Thomery ?",ch:["La fabrication de vin","Les roulements mécaniques pour l'aéronautique","L'imprimerie","La construction navale"],c:1,e:"A.D.R. était spécialisée en micromécanique aéronautique, rachetée par SKF en 1964."},
+  {q:"Qui a fait l'oraison funèbre du peintre Francis Gruber au cimetière de Thomery ?",ch:["André Malraux","Jean Cocteau","Louis Aragon","Pablo Picasso"],c:2,e:"Louis Aragon prononça l'oraison funèbre, et Giacometti dessina la tombe."},
+  {q:"Quelle émission de France 3 a mis Thomery en avant en 2024 ?",ch:["Des racines et des ailes","Le Village préféré des Français","Faut pas rêver","Échappées belles"],c:1,e:"Thomery a représenté l'Île-de-France dans Le Village préféré des Français en 2024."}
+];
+
+const L=['A','B','C','D'];
+let cur=0,score=0,answered=false;
+
+function render(){
+  answered=false;
+  const q=Q[cur],n=Q.length;
+  document.getElementById('fill').style.width=(cur/n*100)+'%';
+  document.getElementById('lbl').textContent=`${cur+1} / ${n}`;
+  document.getElementById('sc').textContent=`${score} pt`;
+  document.getElementById('area').innerHTML=`
+    <div class="qbox">
+      <div class="qn" style="color:#5BADD6">Question ${cur+1} sur ${n}</div>
+      <div class="qt">${q.q}</div>
+      <div class="choices">${q.ch.map((c,i)=>`
+        <button class="cbtn" onclick="aQCM(${i})" id="c${i}">
+          <span class="cl">${L[i]}</span>${c}
+        </button>`).join('')}</div>
+      <div id="fba"></div>
+      <button class="btn-next" id="bn" onclick="next()">${cur<n-1?'Question suivante →':'Voir mes résultats →'}</button>
+    </div>`;
+}
+
+function aQCM(idx){
+  if(answered)return;answered=true;
+  const q=Q[cur],ok=idx===q.c;if(ok)score++;
+  document.querySelectorAll('.cbtn').forEach(b=>b.disabled=true);
+  document.getElementById('c'+idx).classList.add(ok?'correct':'wrong');
+  if(!ok)document.getElementById('c'+q.c).classList.add('correct');
+  document.getElementById('fba').innerHTML=ok
+    ?`<div class="fb ok"><span class="fb-i">✅</span><div class="fb-t"><strong>Bonne réponse !</strong>${q.e}</div></div>`
+    :`<div class="fb ko"><span class="fb-i">❌</span><div class="fb-t"><strong>Mauvaise réponse.</strong> La bonne réponse était <strong style="color:#fff">${q.ch[q.c]}</strong>. ${q.e}</div></div>`;
+  document.getElementById('bn').classList.add('show');
+  document.getElementById('sc').textContent=`${score} pt`;
+}
+
+function next(){
+  cur++;
+  if(cur>=Q.length)showRes();else render();
+}
+
+function showRes(){
+  const n=Q.length,pct=Math.round(score/n*100);
+  document.getElementById('prog').style.display='none';
+  const msg=pct>=80?'Félicitations ! Vous connaissez très bien Thomery !':pct>=50?'Pas mal ! Vous êtes bien informé(e) sur la commune.':'Il reste encore de belles choses à découvrir sur Thomery !';
+  document.getElementById('area').innerHTML=`
+    <div class="res">
+      <div class="res-ring"><div class="res-big">${score}/${n}</div><div class="res-pct">${pct}%</div></div>
+      <div class="res-title">Quiz terminé !</div>
+      <div class="res-sub">${msg}</div>
+      <div class="res-stats">
+        <div class="stat"><div class="stat-n g">${score}</div><div class="stat-l">Bonnes</div></div>
+        <div class="stat"><div class="stat-n r">${n-score}</div><div class="stat-l">Mauvaises</div></div>
+        <div class="stat"><div class="stat-n">${pct}%</div><div class="stat-l">Score</div></div>
+      </div>
+      <div class="res-btns">
+        <button class="btn-white" onclick="cur=0;score=0;document.getElementById('prog').style.display='flex';render()">↺ Rejouer</button>
+        <a href="accueil.html" class="btn-ghost">← Accueil</a>
+        <a href="avis.html" class="btn-ghost">⭐ Donner mon avis</a>
+      </div>
+    </div>`;
+}
+
+render();
+</script>
+</body>
+</html>
